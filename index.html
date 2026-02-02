@@ -1,25 +1,956 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-          <meta charset="UTF-8" />
-          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>推し活タイプ診断 | Cion</title>
-        <meta name="description" content="あなたはどんな推し活スタイル？推し活タイプ診断であなたの推し活度をチェック！" />
-        <meta property="og:title" content="推し活タイプ診断 | Cion" />
-        <meta property="og:description" content="あなたはどんな推し活スタイル？推しカラーを選んで診断スタート！" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <style>
-                * { margin: 0; padding: 0; box-sizing: border-box; }
-                body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; -webkit-font-smoothing: antialiased; }
-              </style>
-          <script type="module" crossorigin src="/assets/index-D_FLGn3h.js"></script>
-    </head>
-    <body>
-          <div id="root"></div>div>
-    </body>
-</html>html>
-    </body>
-        </style></title>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>推し活タイプ診断 | Cion</title>
+    <meta name="description" content="あなたはどんな推し活スタイル？推し活タイプ診断であなたの推し活度をチェック！" />
+    <meta property="og:title" content="推し活タイプ診断 | Cion" />
+    <meta property="og:description" content="あなたはどんな推し活スタイル？推しカラーを選んで診断スタート！" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f8 50%, #f8f0ff 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Screen management */
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e91e8c;
+            letter-spacing: 4px;
+        }
+
+        .produced-by {
+            font-size: 11px;
+            color: #e91e8c;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Start screen */
+        .start-screen {
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin: 40px 0 20px;
+            line-height: 1.4;
+        }
+
+        .main-title span {
+            color: #e91e8c;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .sparkle {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #e91e8c 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(233, 30, 140, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(233, 30, 140, 0.4);
+        }
+
+        /* Color selection screen */
+        .color-screen h2 {
+            text-align: center;
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .color-screen p {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .color-btn {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .color-btn.selected {
+            border-color: #333;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+
+        .color-btn.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .selected-color-name {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 30px;
+            min-height: 24px;
+        }
+
+        .next-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #e91e8c 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .next-btn.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(233, 30, 140, 0.3);
+        }
+
+        /* Quiz screen */
+        .quiz-screen {
+            padding-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e91e8c, #ff6b9d);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .question-number {
+            text-align: center;
+            font-size: 14px;
+            color: #e91e8c;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 16px 20px;
+            font-size: 15px;
+            color: #333;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .answer-btn:hover {
+            border-color: #e91e8c;
+            background: #fff5f9;
+        }
+
+        .answer-btn.selected {
+            border-color: #e91e8c;
+            background: linear-gradient(135deg, #fff5f9 0%, #ffeef8 100%);
+        }
+
+        /* Result screen */
+        .result-screen {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .result-header {
+            margin-bottom: 30px;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .result-type {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e91e8c;
+            margin-bottom: 5px;
+        }
+
+        .result-icon {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .result-card h3 {
+            font-size: 16px;
+            color: #e91e8c;
+            margin-bottom: 15px;
+        }
+
+        .result-card p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #ffeef8 0%, #f8f0ff 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #e91e8c;
+        }
+
+        .score-max {
+            font-size: 18px;
+            color: #999;
+        }
+
+        .traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .trait {
+            background: #f8f0ff;
+            color: #9c27b0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .cion-section {
+            background: linear-gradient(135deg, #fff5f8 0%, #ffeef8 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid #ffcce4;
+        }
+
+        .cion-section h3 {
+            font-size: 16px;
+            color: #e91e8c;
+            margin-bottom: 15px;
+        }
+
+        .cion-section p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .cion-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #e91e8c 0%, #ff6b9d 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .cion-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 30, 140, 0.3);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .share-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn.twitter {
+            background: #1da1f2;
+            color: white;
+        }
+
+        .share-btn.retry {
+            background: white;
+            color: #e91e8c;
+            border: 2px solid #e91e8c;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .shop-intro {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .shop-intro h3 {
+            font-size: 16px;
+            color: #e91e8c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .shop-intro h4 {
+            font-size: 14px;
+            color: #e91e8c;
+            margin: 20px 0 12px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .shop-description {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .shop-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: #fef8fb;
+            border-radius: 12px;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .feature-content strong {
+            font-size: 13px;
+            color: #333;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .feature-content p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .brands {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .brand-item {
+            padding: 12px;
+            background: #f8f5ff;
+            border-radius: 10px;
+        }
+
+        .brand-item strong {
+            font-size: 13px;
+            color: #7e57c2;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .brand-item p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .shop-intro .cion-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 30px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e91e8c;
+            letter-spacing: 3px;
+        }
+
+        .footer-text {
+            font-size: 11px;
+            color: #999;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="produced-by">Produced by</div>
+            <div class="logo">Cion</div>
+            <div class="subtitle">香川県宇多津 補正下着セレクトショップ</div>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen start-screen active">
+            <div class="sparkle">💖✨</div>
+            <h1 class="main-title">あなたの<br><span>推し活タイプ</span>は？</h1>
+            <p class="description">
+                推しへの愛は人それぞれ。<br>
+                簡単な質問に答えて、<br>
+                あなたの推し活スタイルを診断！<br>
+                <br>
+                推しカラーを選んで<br>
+                診断スタート！
+            </p>
+            <button class="start-btn" onclick="showScreen('color-screen')">診断スタート</button>
+        </div>
+
+        <!-- Color Selection Screen -->
+        <div id="color-screen" class="screen color-screen">
+            <h2>💕 推しカラーを選んでね</h2>
+            <p>あなたの推しのメンバーカラーは？</p>
+
+            <div class="color-grid" id="color-grid"></div>
+
+            <div class="selected-color-name" id="selected-color-name"></div>
+
+            <button class="next-btn" id="color-next-btn" onclick="startQuiz()">この色で診断する</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen quiz-screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div class="question-number" id="question-number"></div>
+            <div class="question-text" id="question-text"></div>
+
+            <div class="answers" id="answers"></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen result-screen">
+            <div class="result-header">
+                <div class="result-label">あなたの推し活タイプは...</div>
+                <div class="result-icon" id="result-icon"></div>
+                <div class="result-type" id="result-type"></div>
+            </div>
+
+            <div class="result-card">
+                <div class="score-display">
+                    <div class="score-label">推し活度</div>
+                    <div>
+                        <span class="score-value" id="score-value"></span>
+                        <span class="score-max">/ 100</span>
+                    </div>
+                </div>
+
+                <h3>✨ あなたの特徴</h3>
+                <p id="result-description"></p>
+
+                <div class="traits" id="result-traits"></div>
+            </div>
+
+            <div class="result-card">
+                <h3>💡 おすすめの推し活</h3>
+                <p id="result-advice"></p>
+            </div>
+
+            <div class="cion-section">
+                <h3>💕 推し活をもっと輝かせるために</h3>
+                <p>
+                    ライブやイベントで最高の自分で推しに会いたい！<br>
+                    Cionでは、あなたの魅力を引き出す<br>
+                    補正下着をご提案しています。<br>
+                    理想のボディラインで、推し活をもっと楽しく✨
+                </p>
+            </div>
+
+            <div class="shop-intro">
+                <h3>🏠 Cionについて</h3>
+                <p class="shop-description">
+                    香川県宇多津にある補正下着のセレクトショップです。
+                </p>
+
+                <div class="shop-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">📐</span>
+                        <div class="feature-content">
+                            <strong>専門的なフィッティング</strong>
+                            <p>採寸サービスを提供し、お客様に合ったブラジャーをご試着いただけます</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👗</span>
+                        <div class="feature-content">
+                            <strong>豊富なサイズ展開</strong>
+                            <p>幅広いサイズをご用意しております</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✨</span>
+                        <div class="feature-content">
+                            <strong>Cionオリジナル美容下着</strong>
+                            <p>専門ボディメイキストと一緒に理想のバストをつくるサポート</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🌟</span>
+                        <div class="feature-content">
+                            <strong>トータルケア</strong>
+                            <p>姿勢、ボディライン、呼吸まで意識した全体的なアプローチ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>取り扱いブランド</h4>
+                <div class="brands">
+                    <div class="brand-item">
+                        <strong>ナウクチュール</strong>
+                        <p>補整下着が初めての方でも安心なフェミニン設計</p>
+                    </div>
+                    <div class="brand-item">
+                        <strong>ラヴィエール</strong>
+                        <p>姿勢や骨格に着目した独自構造</p>
+                    </div>
+                    <div class="brand-item">
+                        <strong>ラスディール</strong>
+                        <p>繊細なレースと日本製の丁寧な設計</p>
+                    </div>
+                </div>
+
+                <a href="https://cion-utazu.com" target="_blank" class="cion-link">Cion公式サイト →</a>
+            </div>
+
+            <div class="share-buttons">
+                <button class="share-btn twitter" onclick="shareTwitter()">Xでシェア</button>
+                <button class="share-btn retry" onclick="retry()">もう一度</button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-logo">Cion</div>
+            <div class="footer-text">© 2024 Cion All Rights Reserved.</div>
+        </footer>
+    </div>
+
+    <script>
+        // Color data
+        const colors = [
+            { name: '赤', hex: '#e53935' },
+            { name: 'ピンク', hex: '#ec407a' },
+            { name: 'オレンジ', hex: '#ff9800' },
+            { name: '黄色', hex: '#fdd835' },
+            { name: '黄緑', hex: '#9ccc65' },
+            { name: '緑', hex: '#43a047' },
+            { name: '水色', hex: '#29b6f6' },
+            { name: '青', hex: '#1e88e5' },
+            { name: '紫', hex: '#7e57c2' },
+            { name: '白', hex: '#fafafa' },
+            { name: '黒', hex: '#212121' },
+            { name: 'ゴールド', hex: '#ffc107' },
+            { name: 'シルバー', hex: '#9e9e9e' },
+            { name: 'ネイビー', hex: '#303f9f' },
+            { name: 'ワインレッド', hex: '#c62828' }
+        ];
+
+        // Quiz questions
+        const questions = [
+            {
+                text: '推しの新しい写真や動画が来たとき、どうなる？',
+                answers: [
+                    { text: '尊い...無理...語彙力消失', score: 25 },
+                    { text: '待って！！スクショ祭り', score: 20 },
+                    { text: 'いいね押して保存', score: 12 },
+                    { text: '「お、いいね」って感じ', score: 8 }
+                ]
+            },
+            {
+                text: 'あなたの推し活は「沼」に例えると？',
+                answers: [
+                    { text: 'マリアナ海溝レベル。もう底が見えない', score: 25 },
+                    { text: 'しっかり沼ってます。抜け出す気ゼロ', score: 20 },
+                    { text: '足首くらいは浸かってる', score: 12 },
+                    { text: '水たまり程度かな', score: 8 }
+                ]
+            },
+            {
+                text: '推しの供給（新情報・活動）について',
+                answers: [
+                    { text: '供給過多で常にしんどい（幸せ）', score: 25 },
+                    { text: 'ちょうど良く追えてる', score: 18 },
+                    { text: '追いきれない時もある', score: 12 },
+                    { text: 'マイペースに楽しんでる', score: 8 }
+                ]
+            },
+            {
+                text: '推しの良さを布教したい欲求は？',
+                answers: [
+                    { text: '全人類に見てほしい！！！', score: 25 },
+                    { text: '友達には積極的に勧める', score: 20 },
+                    { text: '聞かれたら答える程度', score: 12 },
+                    { text: '自分だけで楽しみたい派', score: 8 }
+                ]
+            },
+            {
+                text: '推しは自分にとってどんな存在？',
+                answers: [
+                    { text: '生きがい。光。人生そのもの', score: 25 },
+                    { text: '養いたい存在（課金の意味で）', score: 22 },
+                    { text: '日々の癒し', score: 15 },
+                    { text: '好きなアーティストの一人', score: 8 }
+                ]
+            },
+            {
+                text: 'ライブやイベントへの姿勢は？',
+                answers: [
+                    { text: '推しに最高の自分を見せたい！全力で準備', score: 25 },
+                    { text: 'しっかり参戦！グッズも揃える', score: 20 },
+                    { text: '行ける時に行く', score: 12 },
+                    { text: '配信や映像で満足', score: 8 }
+                ]
+            }
+        ];
+
+        // Result types
+        const resultTypes = [
+            {
+                name: '限界オタク〜神推し極めし者〜',
+                icon: '👑',
+                minScore: 90,
+                description: '「尊い」「無理」「しんどい」が口癖のあなた。推しの存在が尊すぎて語彙力が常に行方不明。でもそれこそが真の愛の証！推しはあなたにとって光であり、生きがいそのもの。沼の底で幸せに暮らしています✨',
+                advice: '推しに会う日は「最高の自分」で！ライブ参戦時は補正下着で理想のボディラインを作って、自信を持って推しに見せつけましょう。あなたの輝きは推しにも届いているはず！',
+                traits: ['語彙力消失', '沼の住人', '布教の達人', '供給過多でも生存']
+            },
+            {
+                name: '推し活マスター〜愛の錬金術師〜',
+                icon: '💎',
+                minScore: 70,
+                description: '時間もお金も上手に使いながら、しっかり沼に浸かっているあなた。供給に対する処理能力が高く、推しの良さを的確に布教できる実力派。「養いたい」気持ちを行動に移せるタイプです！',
+                advice: 'イベント参戦時は自分磨きで差をつけて！姿勢やボディラインを整えれば、推しカラーのコーデももっと映えます。最高のコンディションで推しに会いましょう♪',
+                traits: ['効率的な愛', '計画的課金', 'バランス感覚◎', '長期戦の覇者']
+            },
+            {
+                name: 'ゆるふわ推し活民〜癒しの求道者〜',
+                icon: '🌸',
+                minScore: 50,
+                description: 'マイペースに推しを愛でるスタイル。激しく燃え上がるより、じんわり温まる愛情の持ち主。「推しが健康に良い」を体現していて、推しの存在が日々の癒しになっています。無理なく長く応援できる理想形！',
+                advice: 'たまのイベント参戦をもっと特別な日に！普段頑張っている自分へのご褒美として、素敵な姿で推しに会いに行きませんか？その日だけは「限界オタク」になっちゃいましょう✨',
+                traits: ['癒し系', 'マイペース', '細く長く', '心穏やか']
+            },
+            {
+                name: '新星オタク〜沼への入口に立つ者〜',
+                icon: '⭐',
+                minScore: 0,
+                description: '推しの沼はまだ足首くらい？これから深みにハマっていく伸びしろMAX！「待って」「ビジュアルが良い」から始まり、いつか「尊い...無理...」と言う日が来るかも。新鮮な気持ちを大切に♪',
+                advice: '推し活デビューの第一歩として、まずは自分磨きから始めてみては？自信がつくと推しへの愛もどんどん深まります。沼へようこそ...!',
+                traits: ['フレッシュ', '伸びしろ∞', '純粋な眼差し', '期待の新人']
+            }
+        ];
+
+        let selectedColor = null;
+        let currentQuestion = 0;
+        let totalScore = 0;
+
+        // Initialize color grid
+        function initColorGrid() {
+            const grid = document.getElementById('color-grid');
+            colors.forEach((color, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'color-btn';
+                btn.style.backgroundColor = color.hex;
+                if (color.hex === '#fafafa') {
+                    btn.style.border = '2px solid #ddd';
+                }
+                btn.onclick = () => selectColor(index);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectColor(index) {
+            const btns = document.querySelectorAll('.color-btn');
+            btns.forEach(btn => btn.classList.remove('selected'));
+            btns[index].classList.add('selected');
+
+            selectedColor = colors[index];
+            document.getElementById('selected-color-name').textContent = `選択中: ${selectedColor.name}`;
+            document.getElementById('color-next-btn').classList.add('enabled');
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startQuiz() {
+            currentQuestion = 0;
+            totalScore = 0;
+            showScreen('quiz-screen');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            const total = questions.length;
+
+            document.getElementById('progress-fill').style.width = `${((currentQuestion) / total) * 100}%`;
+            document.getElementById('question-number').textContent = `Question ${currentQuestion + 1} / ${total}`;
+            document.getElementById('question-text').textContent = q.text;
+
+            const answersContainer = document.getElementById('answers');
+            answersContainer.innerHTML = '';
+
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = answer.text;
+                btn.onclick = () => selectAnswer(index);
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(index) {
+            const q = questions[currentQuestion];
+            totalScore += q.answers[index].score;
+
+            // Visual feedback
+            const btns = document.querySelectorAll('.answer-btn');
+            btns[index].classList.add('selected');
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 300);
+        }
+
+        function showResult() {
+            // Normalize score to 100
+            const maxPossible = questions.length * 25;
+            const normalizedScore = Math.round((totalScore / maxPossible) * 100);
+
+            // Find result type
+            let result = resultTypes[resultTypes.length - 1];
+            for (const type of resultTypes) {
+                if (normalizedScore >= type.minScore) {
+                    result = type;
+                    break;
+                }
+            }
+
+            document.getElementById('result-icon').textContent = result.icon;
+            document.getElementById('result-type').textContent = result.name;
+            document.getElementById('score-value').textContent = normalizedScore;
+            document.getElementById('result-description').textContent = result.description;
+            document.getElementById('result-advice').textContent = result.advice;
+
+            const traitsContainer = document.getElementById('result-traits');
+            traitsContainer.innerHTML = '';
+            result.traits.forEach(trait => {
+                const span = document.createElement('span');
+                span.className = 'trait';
+                span.textContent = `#${trait}`;
+                traitsContainer.appendChild(span);
+            });
+
+            document.getElementById('progress-fill').style.width = '100%';
+            showScreen('result-screen');
+        }
+
+        function shareTwitter() {
+            const resultType = document.getElementById('result-type').textContent;
+            const score = document.getElementById('score-value').textContent;
+            const text = `私の推し活タイプは「${resultType}」でした！推し活度は${score}/100✨\n\n推しカラー: ${selectedColor.name}\n\n#推し活タイプ診断 #Cion`;
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
+        }
+
+        function retry() {
+            selectedColor = null;
+            currentQuestion = 0;
+            totalScore = 0;
+
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('selected-color-name').textContent = '';
+            document.getElementById('color-next-btn').classList.remove('enabled');
+
+            showScreen('start-screen');
+        }
+
+        // Initialize
+        initColorGrid();
+    </script>
+</body>
+</html>
